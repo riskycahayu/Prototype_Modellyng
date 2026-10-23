@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modellyng — AI-Powered Academic Knowledge Modeling</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              950: '#070b19', // Midnight canvas
+              900: '#0c1228', // Deep Navy surface
+              850: '#111a38', // Elevated card
+              800: '#17234a', // Border / subtle highlight
+              700: '#233670',
+              500: '#3b82f6', // Electric blue accent
+              400: '#60a5fa', // Light cyan blue
+              accent: '#6366f1', // Indigo / violet accent
+              cyan: '#06b6d4',
+            }
+          },
+          backgroundImage: {
+            'grid-pattern': "radial-gradient(rgba(59, 130, 246, 0.12) 1px, transparent 1px)",
+            'glow-gradient': "radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.18) 0%, rgba(12, 18, 40, 0) 70%)"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Utilities & Subtle Glows */
+    .bg-grid {
+      background-size: 24px 24px;
+    }
+    .glass-nav {
+      background: rgba(12, 18, 40, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(17, 26, 56, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .glass-card:hover {
+      border-color: rgba(99, 102, 241, 0.35);
+      box-shadow: 0 10px 30px -10px rgba(59, 130, 246, 0.15);
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, #ffffff 30%, #93c5fd 70%, #818cf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .code-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #070b19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+
+<body class="bg-brand-950 text-slate-100 font-sans selection:bg-brand-500 selection:text-white antialiased overflow-x-hidden min-h-screen relative">
+
+  <!-- Background Ambient Glows -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-gradient-to-b from-indigo-600/20 via-blue-600/10 to-transparent blur-[120px] rounded-full"></div>
+    <div class="absolute top-[35%] -left-32 w-[450px] h-[450px] bg-cyan-600/10 blur-[130px] rounded-full"></div>
+    <div class="absolute top-[65%] -right-32 w-[500px] h-[500px] bg-violet-600/10 blur-[140px] rounded-full"></div>
+    <div class="absolute inset-0 bg-grid-pattern bg-grid opacity-40"></div>
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="main-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="flex items-center justify-between h-20 glass-nav rounded-2xl mt-3 px-5 sm:px-7 transition-all">
+        
+        <!-- Brand Logo / Wordmark -->
+        <a href="#home" class="flex items-center gap-3 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 via-indigo-500 to-cyan-400 p-[1.5px] shadow-lg shadow-indigo-500/20 group-hover:shadow-indigo-500/40 transition-all">
+            <div class="w-full h-full bg-brand-900 rounded-[10px] flex items-center justify-center">
+              <i data-lucide="network" class="w-5 h-5 text-cyan-300"></i>
+            </div>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-extrabold text-xl tracking-tight text-white flex items-center gap-1">
+              Modellyng
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+            </span>
+            <span class="text-[10px] uppercase tracking-wider font-semibold text-slate-400 -mt-1 font-mono">Academic AI</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+          <a href="#home" class="hover:text-cyan-400 transition-colors">Home</a>
+          <a href="#about" class="hover:text-cyan-400 transition-colors">About</a>
+          <a href="#product" class="hover:text-cyan-400 transition-colors">Product</a>
+          <a href="#team" class="hover:text-cyan-400 transition-colors">Our Team</a>
+          <a href="#roadmap" class="hover:text-cyan-400 transition-colors">Roadmap</a>
+          <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+        </div>
+
+        <!-- Action CTA Buttons -->
+        <div class="hidden md:flex items-center gap-3">
+          <a href="#about" class="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800/60 hover:bg-slate-800 border border-slate-700/60 rounded-xl transition-all">
+            Explore Startup
+          </a>
+          <a href="#team" class="px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 rounded-xl shadow-md shadow-blue-600/20 hover:shadow-blue-600/30 transition-all flex items-center gap-1.5">
+            <span>Meet Our Team</span>
+            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <div class="flex md:hidden">
+          <button id="mobile-menu-btn" class="p-2 text-slate-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 rounded-lg">
+            <i data-lucide="menu" id="menu-icon" class="w-6 h-6"></i>
+            <i data-lucide="x" id="close-icon" class="w-6 h-6 hidden"></i>
+          </button>
+        </div>
+
+      </nav>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="hidden md:hidden glass-nav rounded-2xl mt-2 p-5 border border-slate-800 space-y-3">
+        <a href="#home" class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-200 hover:text-cyan-400 hover:bg-slate-800/40 rounded-lg">Home</a>
+        <a href="#about" class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-200 hover:text-cyan-400 hover:bg-slate-800/40 rounded-lg">About</a>
+        <a href="#product" class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-200 hover:text-cyan-400 hover:bg-slate-800/40 rounded-lg">Product</a>
+        <a href="#team" class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-200 hover:text-cyan-400 hover:bg-slate-800/40 rounded-lg">Our Team</a>
+        <a href="#roadmap" class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-200 hover:text-cyan-400 hover:bg-slate-800/40 rounded-lg">Roadmap</a>
+        <a href="#contact" class="mobile-nav-link block px-3 py-2 text-base font-medium text-slate-200 hover:text-cyan-400 hover:bg-slate-800/40 rounded-lg">Contact</a>
+        <div class="pt-3 border-t border-slate-800/80 flex flex-col gap-2">
+          <a href="#about" class="mobile-nav-link text-center py-2.5 text-xs font-semibold text-slate-300 bg-slate-800/70 rounded-xl">Explore Our Startup</a>
+          <a href="#team" class="mobile-nav-link text-center py-2.5 text-xs font-semibold text-white bg-blue-600 rounded-xl">Meet Our Team</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-28">
+
+    <!-- ==========================================
+         SECTION 1: HOME / HERO
+         ========================================== -->
+    <section id="home" class="min-h-[calc(100vh-7rem)] flex items-center justify-center py-12 md:py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- Left Column: Value Proposition -->
+          <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+            
+            <!-- Category Tag -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-slate-700/60 shadow-inner">
+              <span class="flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+              </span>
+              <span class="code-badge text-cyan-300 font-medium">AI × Academic Research</span>
+              <span class="text-slate-500">•</span>
+              <span class="text-xs text-slate-400 font-medium">Knowledge Modeling Platform</span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12]">
+              From Research Papers to <span class="text-gradient">Structured Knowledge.</span>
+            </h1>
+
+            <!-- Description -->
+            <p class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal">
+              Understand, compare, and synthesize academic literature with AI-powered knowledge modeling that keeps evidence traceable and research transparent.
+            </p>
+
+            <!-- Quick Key Indicators -->
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs font-medium text-slate-400 pt-1">
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400"></i>
+                <span>Traceable Evidence</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-4 h-4 text-cyan-400"></i>
+                <span>Human-in-the-Loop</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <i data-lucide="check-circle" class="w-4 h-4 text-indigo-400"></i>
+                <span>Multi-Paper Synthesis</span>
+              </div>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3">
+              <a href="#about" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white font-semibold text-sm shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition-all flex items-center justify-center gap-2 group">
+                <span>Explore Our Startup</span>
+                <i data-lucide="compass" class="w-4 h-4 group-hover:rotate-45 transition-transform"></i>
+              </a>
+              <a href="#team" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm border border-slate-700/80 transition-all flex items-center justify-center gap-2">
+                <span>Meet Our Team</span>
+                <i data-lucide="users" class="w-4 h-4 text-slate-400"></i>
+              </a>
+            </div>
+
+            <!-- Micro Disclaimer -->
+            <p class="text-[11px] text-slate-500 italic">
+              *Designed for undergraduate, postgraduate, lecturers, and educational research labs.
+            </p>
+
+          </div>
+
+          <!-- Right Column: Interactive App Mockup (Visualizing Structured Paper Model, Matrix, Gap Map) -->
+          <div class="lg:col-span-6">
+            <div class="relative mx-auto max-w-lg lg:max-w-none">
+              
+              <!-- Subtle Backdrop Decoration -->
+              <div class="absolute -inset-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-3xl blur-xl opacity-75"></div>
+
+              <!-- Main Application Mockup Container -->
+              <div class="relative rounded-2xl glass-card overflow-hidden shadow-2xl border border-slate-700/70">
+                
+                <!-- Mockup Window Header -->
+                <div class="px-4 py-3 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+                  <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+                    <span class="ml-2 text-xs font-mono text-slate-400 flex items-center gap-1.5">
+                      <i data-lucide="folder-git-2" class="w-3.5 h-3.5 text-cyan-400"></i>
+                      modellyng-workspace / thesis-corpus-2025
+                    </span>
+                  </div>
+                  <span class="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-blue-950/80 text-blue-300 border border-blue-800/40">
+                    Design Mockup • Preview
+                  </span>
+                </div>
+
+                <!-- Mockup Interactive Tabs Preview -->
+                <div class="p-5 space-y-4">
+
+                  <!-- Header inside mockup -->
+                  <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                    <div>
+                      <h4 class="text-xs font-bold text-slate-200">Synthesizing 6 Selected Publications</h4>
+                      <p class="text-[11px] text-slate-400">Domain: Generative AI in Academic Literature Analysis</p>
+                    </div>
+                    <span class="text-xs font-mono text-cyan-400 bg-cyan-950/60 px-2 py-1 rounded border border-cyan-800/40 flex items-center gap-1">
+                      <i data-lucide="check" class="w-3 h-3 text-cyan-400"></i> 100% Traceable
+                    </span>
+                  </div>
+
+                  <!-- 1. Structured Paper Model (Mini Preview) -->
+                  <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-semibold text-blue-400 flex items-center gap-1.5">
+                        <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+                        Structured Paper Model
+                      </span>
+                      <span class="text-[10px] font-mono text-slate-400">ID: Paper_2024_Chen et al.</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-[11px]">
+                      <div class="p-2 rounded bg-slate-950/60 border border-slate-800/70">
+                        <span class="text-slate-400 block text-[9px] uppercase font-mono">Objective</span>
+                        <span class="text-slate-200 font-medium truncate block">Zero-shot extraction</span>
+                      </div>
+                      <div class="p-2 rounded bg-slate-950/60 border border-slate-800/70">
+                        <span class="text-slate-400 block text-[9px] uppercase font-mono">Methodology</span>
+                        <span class="text-slate-200 font-medium truncate block">Graph Transformer</span>
+                      </div>
+                      <div class="p-2 rounded bg-slate-950/60 border border-slate-800/70">
+                        <span class="text-slate-400 block text-[9px] uppercase font-mono">Traceable Claim</span>
+                        <span class="text-cyan-300 font-medium truncate block">Page 7, ¶ 3.2</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 2. Comparative Paper Matrix (Mini Preview) -->
+                  <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-semibold text-indigo-400 flex items-center gap-1.5">
+                        <i data-lucide="table-2" class="w-3.5 h-3.5"></i>
+                        Comparative Paper Matrix
+                      </span>
+                      <span class="text-[10px] text-slate-400">Cross-Analysis Matrix</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                      <table class="w-full text-left text-[11px]">
+                        <thead>
+                          <tr class="text-slate-400 border-b border-slate-800 text-[10px]">
+                            <th class="pb-1">Study</th>
+                            <th class="pb-1">Sample / Corpus</th>
+                            <th class="pb-1">AI Approach</th>
+                            <th class="pb-1">Identified Limitation</th>
+                          </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800/50 text-slate-300">
+                          <tr>
+                            <td class="py-1.5 font-medium text-white">Chen (2024)</td>
+                            <td class="py-1.5">1,200 CS Papers</td>
+                            <td class="py-1.5 text-cyan-300">Transformer GNN</td>
+                            <td class="py-1.5 text-amber-300/90">High latency</td>
+                          </tr>
+                          <tr>
+                            <td class="py-1.5 font-medium text-white">Miller (2023)</td>
+                            <td class="py-1.5">450 Med Preprints</td>
+                            <td class="py-1.5 text-cyan-300">Semantic Vector</td>
+                            <td class="py-1.5 text-amber-300/90">Hallucination risk</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- 3. Research Gap Map (Mini Visualization) -->
+                  <div class="p-3 rounded-xl bg-slate-900/80 border border-slate-800 space-y-2">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-semibold text-cyan-400 flex items-center gap-1.5">
+                        <i data-lucide="git-merge" class="w-3.5 h-3.5"></i>
+                        Research Gap Map
+                      </span>
+                      <span class="text-[10px] text-emerald-400 bg-emerald-950/50 px-1.5 py-0.5 rounded border border-emerald-800/30">
+                        2 Opportunities Detected
+                      </span>
+                    </div>
+                    <div class="p-2.5 rounded bg-slate-950/80 border border-slate-800 flex items-center gap-3">
+                      <div class="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                      </div>
+                      <div class="text-[11px] leading-tight">
+                        <p class="font-medium text-slate-200">Gap 01: Multi-modal claim verification in non-English datasets</p>
+                        <p class="text-slate-400 text-[10px] mt-0.5">Confidence: 89% • Backed by 4 citation clusters</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Mockup Action Banner -->
+                  <div class="pt-2 flex items-center justify-between text-[11px] text-slate-400">
+                    <span class="flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                      Human-in-the-Loop verification active
+                    </span>
+                    <span class="font-mono text-slate-500">v0.1-prototype</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 2: ABOUT OUR STARTUP
+         ========================================== -->
+    <section id="about" class="py-20 md:py-28 border-t border-slate-800/80 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/60 border border-blue-800/50 text-blue-300 text-xs font-mono font-medium">
+            <i data-lucide="info" class="w-3.5 h-3.5"></i>
+            ABOUT MODELYNG
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Transforming Academic Papers into <br class="hidden sm:block">
+            <span class="text-gradient">Structured Knowledge Representations</span>
+          </h2>
+          <p class="text-slate-300 text-base leading-relaxed">
+            Modellyng is an AI-powered academic knowledge modeling platform designed to help students, lecturers, and researchers analyze and synthesize academic literature in a more structured, efficient, and transparent way.
+          </p>
+        </div>
+
+        <!-- Editorial Overview Card -->
+        <div class="glass-card rounded-2xl p-6 sm:p-10 border border-slate-800 space-y-6">
+          <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-start">
+            <div class="w-14 h-14 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0">
+              <i data-lucide="layers" class="w-7 h-7"></i>
+            </div>
+            <div class="space-y-4 text-slate-300 leading-relaxed text-sm sm:text-base">
+              <p>
+                Unlike AI tools that focus primarily on summarization, Modellyng aims to transform scientific papers into <strong class="text-white font-semibold">structured knowledge representations</strong>, enabling users to compare research findings, explore relationships between publications, and identify potential research gaps.
+              </p>
+              <p>
+                Through <strong class="text-cyan-300 font-semibold">source traceability</strong> and a <strong class="text-blue-300 font-semibold">human-in-the-loop approach</strong>, Modellyng emphasizes evidence verification, transparency, and responsible AI use in academic research.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- B. The Problem -->
+        <div class="space-y-8">
+          <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+            <div>
+              <span class="text-rose-400 text-xs font-mono tracking-wider uppercase font-semibold">The Friction in Academia</span>
+              <h3 class="text-2xl font-bold text-white mt-1">The Problem We Are Solving</h3>
+            </div>
+            <p class="text-slate-400 text-xs sm:text-sm max-w-md">
+              The rapid surge in global publications creates cognitive overload and fragmented evidence tracking for researchers.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <!-- Problem 1 -->
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-rose-500/30 transition-all space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center">
+                <i data-lucide="trending-up" class="w-5 h-5"></i>
+              </div>
+              <h4 class="text-base font-bold text-white">Increasing Academic Publications</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Millions of papers published annually make comprehensive literature reviews daunting and exhausting to keep up with.
+              </p>
+            </div>
+
+            <!-- Problem 2 -->
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-amber-500/30 transition-all space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+                <i data-lucide="clock-alert" class="w-5 h-5"></i>
+              </div>
+              <h4 class="text-base font-bold text-white">Time-Consuming Literature Review</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Researchers spend hundreds of manual hours extracting methodologies, sampling criteria, and underlying theoretical claims.
+              </p>
+            </div>
+
+            <!-- Problem 3 -->
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-indigo-500/30 transition-all space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                <i data-lucide="split" class="w-5 h-5"></i>
+              </div>
+              <h4 class="text-base font-bold text-white">Difficult Cross-Paper Comparison</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Manually mapping varied terminologies and disparate experiment setups across dozens of PDF papers often causes blind spots.
+              </p>
+            </div>
+
+            <!-- Problem 4 -->
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 hover:border-cyan-500/30 transition-all space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center">
+                <i data-lucide="compass" class="w-5 h-5"></i>
+              </div>
+              <h4 class="text-base font-bold text-white">Limited Research Gap Visibility</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Identifying unexplored research niches remains intuitive rather than systematic, leaving high-potential gaps unaddressed.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- C. Our Solution -->
+        <div class="space-y-8">
+          <div class="border-b border-slate-800 pb-4">
+            <span class="text-cyan-400 text-xs font-mono tracking-wider uppercase font-semibold">The Modellyng Paradigm</span>
+            <h3 class="text-2xl font-bold text-white mt-1">Our Solution Architecture</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            
+            <div class="p-5 rounded-2xl bg-brand-900/60 border border-slate-800 hover:border-cyan-500/40 transition-all flex flex-col justify-between space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
+                <i data-lucide="file-code-2" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h5 class="text-sm font-bold text-white">Structured Paper Model</h5>
+                <p class="text-xs text-slate-400 mt-1">Extracts objectives, datasets, methods, and constraints into consistent schema.</p>
+              </div>
+              <span class="text-[10px] font-mono text-cyan-400">Core Feature</span>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-brand-900/60 border border-slate-800 hover:border-indigo-500/40 transition-all flex flex-col justify-between space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+                <i data-lucide="layout-grid" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h5 class="text-sm font-bold text-white">Comparative Paper Matrix</h5>
+                <p class="text-xs text-slate-400 mt-1">Side-by-side dimensional matrices for systematic cross-publication inspection.</p>
+              </div>
+              <span class="text-[10px] font-mono text-indigo-400">Core Feature</span>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-brand-900/60 border border-slate-800 hover:border-purple-500/40 transition-all flex flex-col justify-between space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
+                <i data-lucide="milestone" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h5 class="text-sm font-bold text-white">Research Gap Map</h5>
+                <p class="text-xs text-slate-400 mt-1">Discovers contradictions and underexplored intersections across the corpus.</p>
+              </div>
+              <span class="text-[10px] font-mono text-purple-400">Core Feature</span>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-brand-900/60 border border-slate-800 hover:border-emerald-500/40 transition-all flex flex-col justify-between space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <i data-lucide="link" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h5 class="text-sm font-bold text-white">Source Traceability</h5>
+                <p class="text-xs text-slate-400 mt-1">Every AI claim links directly back to exact page, paragraph, or equation in the original paper.</p>
+              </div>
+              <span class="text-[10px] font-mono text-emerald-400">Trust Guarantee</span>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-brand-900/60 border border-slate-800 hover:border-amber-500/40 transition-all flex flex-col justify-between space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                <i data-lucide="user-check" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <h5 class="text-sm font-bold text-white">Human-in-the-Loop</h5>
+                <p class="text-xs text-slate-400 mt-1">Researchers retain editorial sovereignty to verify, annotate, and approve model outputs.</p>
+              </div>
+              <span class="text-[10px] font-mono text-amber-400">Academic Rigor</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- D. Target Users -->
+        <div class="space-y-8">
+          <div class="border-b border-slate-800 pb-4">
+            <span class="text-indigo-400 text-xs font-mono tracking-wider uppercase font-semibold">User Centricity</span>
+            <h3 class="text-2xl font-bold text-white mt-1">Tailored for the Academic Community</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center font-bold">
+                01
+              </div>
+              <h4 class="text-base font-bold text-white">Undergraduate Students</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Penyusunan skripsi, telaah pustaka bab dua, perbandingan penelitian terdahulu, dan penemuan research gap secara sistematis.
+              </p>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold">
+                02
+              </div>
+              <h4 class="text-base font-bold text-white">Postgraduate Students</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Sintesis literatur mendalam untuk tesis dan disertasi, pemetaan theoretical framework, serta penulisan manuskrip jurnal internasional.
+              </p>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold">
+                03
+              </div>
+              <h4 class="text-base font-bold text-white">Lecturers & Early-Career Researchers</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Bimbingan penelitian mahasiswa, penulisan proposal hibah riset, akselerasi kajian state-of-the-art, dan publikasi bereputasi.
+              </p>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-3">
+              <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center font-bold">
+                04
+              </div>
+              <h4 class="text-base font-bold text-white">Educational & Research Institutions</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Fakultas, program studi, laboratorium riset, dan perpustakaan universitas untuk meningkatkan produktivitas dan integritas sitasi riset.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- E. Vision & Mission -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          
+          <!-- Vision -->
+          <div class="lg:col-span-5 glass-card p-8 rounded-2xl border border-indigo-500/30 bg-gradient-to-br from-indigo-950/40 via-brand-900 to-brand-950 flex flex-col justify-between">
+            <div class="space-y-4">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-mono font-medium">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                OUR VISION
+              </span>
+              <h4 class="text-xl font-bold text-white">To become a trusted AI-powered edutech platform.</h4>
+              <p class="text-sm text-slate-300 leading-relaxed italic">
+                “To become a trusted AI-powered edutech platform that helps students, lecturers, and researchers analyze and synthesize academic literature more efficiently, systematically, and evidence-based, supporting research productivity and learning in higher education.”
+              </p>
+            </div>
+            <div class="pt-6 border-t border-slate-800/80 flex items-center gap-2 text-xs font-mono text-indigo-400">
+              <i data-lucide="compass" class="w-4 h-4"></i>
+              Guiding Higher Education Forward
+            </div>
+          </div>
+
+          <!-- Mission -->
+          <div class="lg:col-span-7 glass-card p-8 rounded-2xl border border-slate-800 space-y-5">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-mono font-medium">
+              <i data-lucide="target" class="w-3.5 h-3.5"></i>
+              OUR MISSION
+            </span>
+            <h4 class="text-xl font-bold text-white">Strategic Commitments to Academic Integrity</h4>
+            
+            <ul class="space-y-3.5 text-xs sm:text-sm text-slate-300">
+              <li class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5 font-mono text-[10px]">1</div>
+                <span>Develop mobile and SaaS platforms that transform academic literature into structured knowledge.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5 font-mono text-[10px]">2</div>
+                <span>Provide fast, transparent, and traceable literature analysis to support better academic decision-making.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5 font-mono text-[10px]">3</div>
+                <span>Apply AI responsibly through a human-in-the-loop approach that promotes accuracy, transparency, and user trust.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5 font-mono text-[10px]">4</div>
+                <span>Continuously improve the product through user validation, campus pilot implementation, and user experience refinement.</span>
+              </li>
+              <li class="flex items-start gap-3">
+                <div class="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 mt-0.5 font-mono text-[10px]">5</div>
+                <span>Build a commercially sustainable edutech service that can be adopted by universities and research institutions.</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 3: OUR PRODUCT / INNOVATION
+         ========================================== -->
+    <section id="product" class="py-20 md:py-28 border-t border-slate-800/80 bg-slate-950/40 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        <!-- Section Heading -->
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/50 text-cyan-300 text-xs font-mono font-medium">
+            <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+            CORE INNOVATION
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Modellyng — AI-Powered Academic Knowledge Modeling
+          </h2>
+          <p class="text-slate-300 text-base leading-relaxed">
+            “A mobile-first platform for structured, evidence-grounded academic literature analysis.”
+          </p>
+        </div>
+
+        <!-- 5 Core Features Matrix -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Feature 1 -->
+          <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center">
+                <i data-lucide="file-text" class="w-6 h-6"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-white">1. Structured Paper Model</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-900/60 text-blue-300 border border-blue-700/50">Active Core</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Mengorganisasi informasi penting dari satu artikel ilmiah, termasuk tujuan, metode, hasil, kontribusi, dan keterbatasan penelitian secara terstruktur dan terstandarisasi.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center gap-1.5">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400"></i> Standardized Research Schema
+            </div>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+                <i data-lucide="columns-3" class="w-6 h-6"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-white">2. Comparative Paper Matrix</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-900/60 text-indigo-300 border border-indigo-700/50">Active Core</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Membantu pengguna membandingkan beberapa publikasi secara sistematis, terutama variasi metode, perbedaan temuan empiris, dan keterbatasan metodologis.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center gap-1.5">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400"></i> Systematic Matrix Cross-Matching
+            </div>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
+                <i data-lucide="git-branch" class="w-6 h-6"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-white">3. Research Gap Map</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-900/60 text-cyan-300 border border-cyan-700/50">Active Core</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Membantu pengguna mengeksplorasi potensi kesenjangan dan peluang penelitian berdasarkan hasil analisis literatur komparatif secara visual.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center gap-1.5">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5 text-cyan-400"></i> Gap Discovery Heuristics
+            </div>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="glass-card p-6 rounded-2xl border border-amber-900/40 bg-gradient-to-b from-amber-950/20 to-brand-900 space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                <i data-lucide="network" class="w-6 h-6"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-white">4. Concept Map & Evidence Mapping</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800/60">In Development</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Menyajikan hubungan antarkonsep dan keterkaitan klaim ilmiah dengan bukti pendukung. Direncanakan pada roadmap pengembangan berikutnya.
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-800 text-[11px] text-amber-300/80 flex items-center gap-1.5 font-mono">
+              <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i> Planned in Phase 02/03
+            </div>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4 flex flex-col justify-between md:col-span-2 lg:col-span-2">
+            <div class="space-y-3">
+              <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                <i data-lucide="shield-check" class="w-6 h-6"></i>
+              </div>
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-bold text-white">5. Source Traceability & Human-in-the-Loop</h4>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/50">Core Philosophy</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Menekankan keterlacakan sumber serta keterlibatan pengguna dalam memeriksa dan memvalidasi hasil analisis AI. Pengguna dapat langsung melompat ke paragraf sumber asli dokumen referensi tanpa ada klaim tak berdasar (anti-hallucination).
+              </p>
+            </div>
+            <div class="pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
+              <i data-lucide="badge-check" class="w-4 h-4 text-emerald-400"></i>
+              <span>Zero Black-Box AI: Setiap kutipan terverifikasi dengan bounding box dokumen.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 5-Stage Product Usage Workflow -->
+        <div class="space-y-8 pt-6">
+          <div class="text-center max-w-2xl mx-auto space-y-2">
+            <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">User Experience Flow</span>
+            <h3 class="text-2xl font-bold text-white">5 Tahapan Alur Kerja Modellyng</h3>
+            <p class="text-xs sm:text-sm text-slate-400">Dari dokumen literatur mentah hingga sintesis terstruktur yang siap dipakai.</p>
+          </div>
+
+          <!-- Horizontal Timeline for Desktop, Vertical for Mobile -->
+          <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+            
+            <!-- Step 1 -->
+            <div class="relative glass-card p-5 rounded-2xl border border-slate-800 space-y-3">
+              <div class="text-2xl font-black font-mono text-cyan-400/80">01</div>
+              <h5 class="text-sm font-bold text-white">Input Academic References</h5>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Pengguna menyiapkan dan mengunggah referensi dokumen ilmiah (PDF/DOI).
+              </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="relative glass-card p-5 rounded-2xl border border-slate-800 space-y-3">
+              <div class="text-2xl font-black font-mono text-blue-400/80">02</div>
+              <h5 class="text-sm font-bold text-white">AI Information Extraction</h5>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Sistem mengekstrak informasi penting secara otomatis dari publikasi ilmiah.
+              </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="relative glass-card p-5 rounded-2xl border border-slate-800 space-y-3">
+              <div class="text-2xl font-black font-mono text-indigo-400/80">03</div>
+              <h5 class="text-sm font-bold text-white">Knowledge Modeling</h5>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Informasi disusun menjadi model pengetahuan terstruktur dan terstandarisasi.
+              </p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="relative glass-card p-5 rounded-2xl border border-slate-800 space-y-3">
+              <div class="text-2xl font-black font-mono text-purple-400/80">04</div>
+              <h5 class="text-sm font-bold text-white">Compare & Discover</h5>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Pengguna membandingkan paper multi-dimensi dan mengeksplorasi research gap.
+              </p>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="relative glass-card p-5 rounded-2xl border border-slate-800 space-y-3">
+              <div class="text-2xl font-black font-mono text-emerald-400/80">05</div>
+              <h5 class="text-sm font-bold text-white">Review & Verify</h5>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Pengguna meninjau hasil analisis dan menelusuri sumber pendukung (Human-in-the-Loop).
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Technology & Trust (Planned Approaches) -->
+        <div class="glass-card rounded-2xl p-8 border border-slate-800 space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <span class="text-xs font-mono text-blue-400 uppercase tracking-wider font-semibold">Underlying Architecture</span>
+              <h4 class="text-lg font-bold text-white">Technology & Trust (Planned Architectural Approaches)</h4>
+            </div>
+            <span class="text-[11px] font-mono text-slate-400 px-3 py-1 rounded bg-slate-900 border border-slate-800 self-start sm:self-center">
+              Planned Framework
+            </span>
+          </div>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+              <i data-lucide="binary" class="w-4 h-4 text-blue-400 mx-auto"></i>
+              <span class="text-xs font-medium text-slate-200 block">Scientific Information Extraction</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+              <i data-lucide="vector-square" class="w-4 h-4 text-cyan-400 mx-auto"></i>
+              <span class="text-xs font-medium text-slate-200 block">Semantic Embeddings</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+              <i data-lucide="git-commit" class="w-4 h-4 text-indigo-400 mx-auto"></i>
+              <span class="text-xs font-medium text-slate-200 block">Claim–Evidence Mapping</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+              <i data-lucide="table" class="w-4 h-4 text-purple-400 mx-auto"></i>
+              <span class="text-xs font-medium text-slate-200 block">Multi-Paper Comparison</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+              <i data-lucide="external-link" class="w-4 h-4 text-emerald-400 mx-auto"></i>
+              <span class="text-xs font-medium text-slate-200 block">Source Traceability</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-900/70 border border-slate-800 text-center space-y-1">
+              <i data-lucide="user-check" class="w-4 h-4 text-amber-400 mx-auto"></i>
+              <span class="text-xs font-medium text-slate-200 block">Human-in-the-Loop</span>
+            </div>
+          </div>
+          
+          <p class="text-[11px] text-slate-500 italic">
+            *Catatan: Pendekatan teknologi di atas merupakan arsitektur yang direncanakan dan divalidasi selama masa pengembangan MVP dan campus pilot.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 4: MEET OUR TEAM
+         ========================================== -->
+    <section id="team" class="py-20 md:py-28 border-t border-slate-800/80 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-950/60 border border-indigo-800/50 text-indigo-300 text-xs font-mono font-medium">
+            <i data-lucide="users" class="w-3.5 h-3.5"></i>
+            LEADERSHIP & ENGINEERING
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Meet the Builders Behind Modellyng
+          </h2>
+          <p class="text-slate-300 text-base leading-relaxed">
+            Tim kolaboratif multidisiplin yang menggabungkan kepemimpinan produk, arsitektur sistem, rekayasa kecerdasan buatan, dan riset pasar.
+          </p>
+        </div>
+
+        <!-- Team Grid (5 Members) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Member 1: Lawrencius C.K. Panjaitan -->
+          <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-5 flex flex-col justify-between hover:border-blue-500/40 transition-all group">
+            <div class="space-y-4">
+              
+              <!-- Professional Placeholder Avatar -->
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center font-bold text-xl text-white shadow-md shadow-blue-500/20 shrink-0">
+                  LP
+                </div>
+                <div>
+                  <h4 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">Lawrencius C.K. Panjaitan</h4>
+                  <span class="text-xs font-mono text-cyan-400 font-semibold block">CEO — Chief Executive Officer</span>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Memimpin arah strategis Modellyng, mengoordinasikan pengembangan startup, menentukan prioritas bisnis, serta membangun komunikasi dengan inkubator, perguruan tinggi, dan calon mitra.
+              </p>
+            </div>
+
+            <!-- Role Focus & Links -->
+            <div class="space-y-3 pt-3 border-t border-slate-800">
+              <div>
+                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">Fokus Peran:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Leadership</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Business Strategy</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Team Coordination</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-1 text-slate-400 text-xs">
+                <span class="hover:text-white transition-colors cursor-pointer flex items-center gap-1">
+                  <i data-lucide="linkedin" class="w-3.5 h-3.5"></i> Profile
+                </span>
+                <span>•</span>
+                <span class="text-slate-500 text-[11px]">Official Contact via Startup</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Member 2: Risky Cahayu -->
+          <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-5 flex flex-col justify-between hover:border-indigo-500/40 transition-all group">
+            <div class="space-y-4">
+              
+              <!-- Professional Placeholder Avatar -->
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center font-bold text-xl text-white shadow-md shadow-indigo-500/20 shrink-0">
+                  RC
+                </div>
+                <div>
+                  <h4 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">Risky Cahayu</h4>
+                  <span class="text-xs font-mono text-indigo-400 font-semibold block">CTO Full-Stack & CMO</span>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Mengembangkan sisi front-end dan back-end pada beberapa fitur aplikasi, membantu integrasi fitur dengan sistem utama, serta mendukung pengujian fungsionalitas. Di bidang pemasaran, berperan dalam strategi branding, komunikasi produk, riset kebutuhan pengguna, dan materi promosi Modellyng.
+              </p>
+            </div>
+
+            <!-- Role Focus & Links -->
+            <div class="space-y-3 pt-3 border-t border-slate-800">
+              <div>
+                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">Fokus Peran:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Full-Stack Development</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Technology Collaboration</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Product Marketing</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-1 text-slate-400 text-xs">
+                <span class="hover:text-white transition-colors cursor-pointer flex items-center gap-1">
+                  <i data-lucide="linkedin" class="w-3.5 h-3.5"></i> Profile
+                </span>
+                <span>•</span>
+                <span class="text-slate-500 text-[11px]">Official Contact via Startup</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Member 3: Arby Nassandro -->
+          <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-5 flex flex-col justify-between hover:border-cyan-500/40 transition-all group">
+            <div class="space-y-4">
+              
+              <!-- Professional Placeholder Avatar -->
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-600 to-blue-700 flex items-center justify-center font-bold text-xl text-white shadow-md shadow-cyan-500/20 shrink-0">
+                  AN
+                </div>
+                <div>
+                  <h4 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">Arby Nassandro</h4>
+                  <span class="text-xs font-mono text-cyan-400 font-semibold block">CTO — Chief Technology Officer</span>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Bertanggung jawab atas pengembangan teknis seluruh bagian aplikasi, termasuk arsitektur sistem, pengembangan front-end dan back-end, integrasi fitur, pengelolaan basis data, serta koordinasi implementasi teknologi agar seluruh komponen Modellyng berjalan secara terpadu.
+              </p>
+            </div>
+
+            <!-- Role Focus & Links -->
+            <div class="space-y-3 pt-3 border-t border-slate-800">
+              <div>
+                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">Fokus Peran:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Application Development</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">System Architecture</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Feature Integration</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-1 text-slate-400 text-xs">
+                <span class="hover:text-white transition-colors cursor-pointer flex items-center gap-1">
+                  <i data-lucide="linkedin" class="w-3.5 h-3.5"></i> Profile
+                </span>
+                <span>•</span>
+                <span class="text-slate-500 text-[11px]">Official Contact via Startup</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Member 4: Aarif Rahmaan Jalaluddin Faqiih -->
+          <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-5 flex flex-col justify-between hover:border-emerald-500/40 transition-all group">
+            <div class="space-y-4">
+              
+              <!-- Professional Placeholder Avatar -->
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 flex items-center justify-center font-bold text-xl text-white shadow-md shadow-emerald-500/20 shrink-0">
+                  AF
+                </div>
+                <div>
+                  <h4 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">Aarif Rahmaan J. Faqiih</h4>
+                  <span class="text-xs font-mono text-emerald-400 font-semibold block">CTO — Application Development</span>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Mendukung pengembangan teknis aplikasi dengan membantu implementasi fitur, integrasi antarkomponen, perbaikan bug, dan pengujian fungsionalitas. Berkolaborasi dengan Arby dalam pengembangan aplikasi dengan cakupan tanggung jawab yang lebih terfokus.
+              </p>
+            </div>
+
+            <!-- Role Focus & Links -->
+            <div class="space-y-3 pt-3 border-t border-slate-800">
+              <div>
+                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">Fokus Peran:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Feature Implementation</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Application Testing</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Bug Fixing</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-1 text-slate-400 text-xs">
+                <span class="hover:text-white transition-colors cursor-pointer flex items-center gap-1">
+                  <i data-lucide="linkedin" class="w-3.5 h-3.5"></i> Profile
+                </span>
+                <span>•</span>
+                <span class="text-slate-500 text-[11px]">Official Contact via Startup</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Member 5: Fatih Al-Fakhri Muhammad -->
+          <div class="glass-card rounded-2xl p-6 border border-slate-800 space-y-5 flex flex-col justify-between hover:border-purple-500/40 transition-all group md:col-span-2 lg:col-span-1">
+            <div class="space-y-4">
+              
+              <!-- Professional Placeholder Avatar -->
+              <div class="flex items-center gap-4">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-600 to-pink-700 flex items-center justify-center font-bold text-xl text-white shadow-md shadow-purple-500/20 shrink-0">
+                  FM
+                </div>
+                <div>
+                  <h4 class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">Fatih Al-Fakhri Muhammad</h4>
+                  <span class="text-xs font-mono text-purple-400 font-semibold block">CTO — AI Modeling</span>
+                </div>
+              </div>
+
+              <!-- Description -->
+              <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Berfokus pada pengembangan dan pemodelan kecerdasan buatan untuk mendukung fitur analisis literatur ilmiah Modellyng, termasuk perancangan pendekatan pemrosesan informasi dari paper, pengembangan logika model AI, serta evaluasi hasil model agar relevan dengan kebutuhan pengguna.
+              </p>
+            </div>
+
+            <!-- Role Focus & Links -->
+            <div class="space-y-3 pt-3 border-t border-slate-800">
+              <div>
+                <span class="text-[10px] font-mono text-slate-400 uppercase tracking-wider block mb-1.5">Fokus Peran:</span>
+                <div class="flex flex-wrap gap-1.5">
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">AI Modeling</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Intelligent Information Extraction</span>
+                  <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-300">Model Evaluation</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 pt-1 text-slate-400 text-xs">
+                <span class="hover:text-white transition-colors cursor-pointer flex items-center gap-1">
+                  <i data-lucide="linkedin" class="w-3.5 h-3.5"></i> Profile
+                </span>
+                <span>•</span>
+                <span class="text-slate-500 text-[11px]">Official Contact via Startup</span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 5: OUR JOURNEY / ROADMAP
+         ========================================== -->
+    <section id="roadmap" class="py-20 md:py-28 border-t border-slate-800/80 bg-slate-950/40 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/60 border border-blue-800/50 text-blue-300 text-xs font-mono font-medium">
+            <i data-lucide="map" class="w-3.5 h-3.5"></i>
+            TRANSPARENT DEVELOPMENT
+          </div>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+            Our Journey & Roadmap
+          </h2>
+          <p class="text-slate-300 text-base leading-relaxed">
+            Tahapan pengembangan Modellyng yang transparan, terukur, dan berorientasi pada validasi pengguna nyata di ekosistem perguruan tinggi.
+          </p>
+
+          <!-- Status Legend -->
+          <div class="flex items-center justify-center gap-6 pt-2 text-xs font-mono">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+              <span class="text-slate-300">In Progress</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-slate-600"></span>
+              <span class="text-slate-400">Planned</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Roadmap Timeline Cards -->
+        <div class="space-y-6 max-w-4xl mx-auto">
+          
+          <!-- Phase 01 -->
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-cyan-400 border border-slate-800 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-3">
+                <span class="text-lg font-black font-mono text-cyan-400">PHASE 01</span>
+                <h4 class="text-lg font-bold text-white">Customer Discovery</h4>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-mono px-2.5 py-1 rounded bg-cyan-950 text-cyan-300 border border-cyan-800/60 flex items-center gap-1">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span> In Progress
+                </span>
+                <span class="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">
+                  Research & Validation
+                </span>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Melakukan wawancara, survei, dan diskusi kelompok dengan mahasiswa, dosen, serta peneliti untuk memahami kebutuhan mendasar dan menentukan prioritas fitur produk.
+            </p>
+          </div>
+
+          <!-- Phase 02 -->
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-indigo-400 border border-slate-800 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-3">
+                <span class="text-lg font-black font-mono text-indigo-400">PHASE 02</span>
+                <h4 class="text-lg font-bold text-white">Product Design & MVP Development</h4>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-900 text-slate-400 border border-slate-800">
+                  Planned
+                </span>
+                <span class="text-[11px] font-mono px-2.5 py-1 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/60">
+                  Planned 3–4 Month MVP
+                </span>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Merancang pengalaman pengguna (UI/UX) dan mengembangkan fitur inti untuk mengolah, menyusun representasi pengetahuan, serta membandingkan literatur akademik.
+            </p>
+          </div>
+
+          <!-- Phase 03 -->
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-slate-700 border border-slate-800 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-3">
+                <span class="text-lg font-black font-mono text-slate-400">PHASE 03</span>
+                <h4 class="text-lg font-bold text-white">Testing & Campus Pilot</h4>
+              </div>
+              <span class="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-900 text-slate-400 border border-slate-800 self-start sm:self-auto">
+                Planned
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Melakukan functional testing, usability testing, dan User Acceptance Testing (UAT) untuk memperoleh umpan balik langsung melalui uji coba pilot di lingkungan kampus mitra.
+            </p>
+          </div>
+
+          <!-- Phase 04 -->
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-slate-700 border border-slate-800 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-3">
+                <span class="text-lg font-black font-mono text-slate-400">PHASE 04</span>
+                <h4 class="text-lg font-bold text-white">Deployment & Evaluation</h4>
+              </div>
+              <span class="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-900 text-slate-400 border border-slate-800 self-start sm:self-auto">
+                Planned
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Mengimplementasikan aplikasi pada infrastruktur cloud, memantau performa dan skalabilitas sistem, serta mengevaluasi kualitas hasil analisis dan pengalaman pengguna.
+            </p>
+          </div>
+
+          <!-- Phase 05 -->
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-slate-700 border border-slate-800 space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-3">
+                <span class="text-lg font-black font-mono text-slate-400">PHASE 05</span>
+                <h4 class="text-lg font-bold text-white">Growth & Commercialization</h4>
+              </div>
+              <span class="text-[11px] font-mono px-2.5 py-1 rounded bg-slate-900 text-slate-400 border border-slate-800 self-start sm:self-auto">
+                Planned
+              </span>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Menyempurnakan produk berdasarkan validasi pasar dan mengembangkan peluang model langganan individu serta skema lisensi institusi perguruan tinggi dan lab riset.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         SECTION 6: CONTACT & COLLABORATION
+         ========================================== -->
+    <section id="contact" class="py-20 md:py-28 border-t border-slate-800/80 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="glass-card rounded-3xl p-8 sm:p-14 border border-indigo-500/30 bg-gradient-to-b from-brand-900/90 to-brand-950 relative overflow-hidden shadow-2xl">
+          
+          <!-- Decorative Glow -->
+          <div class="absolute -top-24 -right-24 w-80 h-80 bg-blue-600/20 blur-[100px] rounded-full pointer-events-none"></div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            <!-- Left Info Area -->
+            <div class="lg:col-span-7 space-y-6 text-left">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-800/50 text-cyan-300 text-xs font-mono font-medium">
+                <i data-lucide="handshake" class="w-3.5 h-3.5"></i>
+                OPEN FOR COLLABORATION
+              </div>
+              <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Let's Build Better Research Together.
+              </h2>
+              <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                “Interested in academic innovation, research collaboration, or campus pilot opportunities? Connect with the Modellyng team.”
+              </p>
+              <p class="text-slate-400 text-xs sm:text-sm">
+                Have an idea, research challenge, or collaboration opportunity? We'd love to hear from you.
+              </p>
+
+              <!-- Official Touchpoints Placeholder List -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                
+                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Official Email</span>
+                    <span class="text-xs font-medium text-slate-200">contact@modellyng.startup (placeholder)</span>
+                  </div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="linkedin" class="w-4 h-4"></i>
+                  </div>
+                  <div>
+                    <span class="text-[10px] font-mono text-slate-400 block uppercase">Startup LinkedIn</span>
+                    <span class="text-xs font-medium text-slate-200">Modellyng Official (placeholder)</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- Right Interactive Form / Action Box -->
+            <div class="lg:col-span-5">
+              <div class="p-6 sm:p-8 rounded-2xl bg-brand-950/80 border border-slate-800 space-y-4 shadow-inner">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                  <i data-lucide="message-square" class="w-4 h-4 text-cyan-400"></i>
+                  Hubungi Tim Modellyng
+                </h3>
+                <p class="text-xs text-slate-400">
+                  Kirimkan pesan ketertarikan untuk campus pilot, riset bersama, atau diskusi produk.
+                </p>
+
+                <!-- Clean Form -->
+                <form id="collab-form" onsubmit="handleFormSubmit(event)" class="space-y-3.5">
+                  <div>
+                    <label class="block text-[11px] font-mono text-slate-400 mb-1">Nama Lengkap / Institusi</label>
+                    <input type="text" required placeholder="Contoh: Lab Komputasi Universitas / Nama Peneliti" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-mono text-slate-400 mb-1">Email Anda</label>
+                    <input type="email" required placeholder="name@institution.ac.id" class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all">
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-mono text-slate-400 mb-1">Peluang Kolaborasi</label>
+                    <select class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all">
+                      <option>Campus Pilot & Testing (Phase 03)</option>
+                      <option>Academic Research Collaboration</option>
+                      <option>General Inquiry / Discussion</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-mono text-slate-400 mb-1">Pesan Singkat</label>
+                    <textarea rows="3" placeholder="Tuliskan ide atau potensi implementasi..." class="w-full px-3.5 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"></textarea>
+                  </div>
+
+                  <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white font-semibold text-xs shadow-lg shadow-indigo-600/30 transition-all flex items-center justify-center gap-2">
+                    <span>Contact Our Team</span>
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                  </button>
+
+                  <div id="form-feedback" class="hidden text-center text-xs text-emerald-400 font-mono py-1">
+                    ✓ Pesan terkirim (Placeholder demo)! Tim Modellyng akan merespons.
+                  </div>
+                </form>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="border-t border-slate-800/80 bg-brand-950 py-12 text-slate-400 text-xs relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-800/80">
+        
+        <!-- Wordmark & Brief -->
+        <div class="space-y-2 text-center md:text-left">
+          <div class="flex items-center justify-center md:justify-start gap-2">
+            <div class="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center text-white">
+              <i data-lucide="network" class="w-3.5 h-3.5"></i>
+            </div>
+            <span class="font-bold text-base text-white tracking-tight">Modellyng</span>
+            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">v0.1</span>
+          </div>
+          <p class="text-xs text-slate-400 max-w-sm">
+            AI-powered academic knowledge modeling platform for students, lecturers, and researchers.
+          </p>
+        </div>
+
+        <!-- Section Navigation -->
+        <div class="flex flex-wrap items-center justify-center gap-6 text-xs font-medium text-slate-300">
+          <a href="#home" class="hover:text-cyan-400 transition-colors">Home</a>
+          <a href="#about" class="hover:text-cyan-400 transition-colors">About</a>
+          <a href="#product" class="hover:text-cyan-400 transition-colors">Product</a>
+          <a href="#team" class="hover:text-cyan-400 transition-colors">Our Team</a>
+          <a href="#roadmap" class="hover:text-cyan-400 transition-colors">Roadmap</a>
+          <a href="#contact" class="hover:text-cyan-400 transition-colors">Contact</a>
+        </div>
+
+      </div>
+
+      <!-- Copyright & Ethics Tag -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-slate-500">
+        <p>© 2025 Modellyng Startup. All rights reserved. Developed with academic integrity & Human-in-the-Loop ethics.</p>
+        <div class="flex items-center gap-4">
+          <span>Responsible AI</span>
+          <span>•</span>
+          <span>Source Traceable</span>
+          <span>•</span>
+          <span>Academic Edutech</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- SCRIPT: INTERACTION & DOM HANDLING -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Mobile Navbar Toggle Logic
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        menuIcon.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+      } else {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      }
+    });
+
+    // Close mobile menu on link click
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      });
+    });
+
+    // Header subtle elevation on scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('nav');
+      if (window.scrollY > 30) {
+        nav.classList.add('shadow-xl', 'bg-brand-900/90');
+      } else {
+        nav.classList.remove('shadow-xl');
+      }
+    });
+
+    // Contact Form Demo Submission Handler
+    function handleFormSubmit(event) {
+      event.preventDefault();
+      const feedback = document.getElementById('form-feedback');
+      feedback.classList.remove('hidden');
+      setTimeout(() => {
+        feedback.classList.add('hidden');
+      }, 5000);
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "Modellyng — AI Academic Knowledge Modeling",
+  "description": "A minimalist, aesthetic edutech platform that transforms academic literature into structured knowledge representations with comparative matrices, research gap mapping, and source traceability.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
